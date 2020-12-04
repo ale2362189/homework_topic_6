@@ -1,68 +1,55 @@
+package war;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Player {
+public class Deck {
 
-	private String name;
-	private int score = 0;
-	private List<Card> hand = new ArrayList<>();
+	private List<Card> cards = new ArrayList<Card>();
 
-	public Player(String name) {
-		this.name = name;
-	}
+	private List<String> suits = List.of("Hearts", "Diamonds", "Spades", "Clubs");
 
-	public String describe() {
-		return toString();
-	}
+	private List<String> characters = List.of("two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+			"jack", "queen", "king", "ace");
 
-	public Card flip() {
-		if (!hand.isEmpty()) {
-			return hand.remove(0);
+	public Deck() {
+		for (String suit : suits) {
+			for (int i = 0; i < characters.size(); i++) {
+				String name = String.format("%s of %s", characters.get(i), suit);
+				int value = i + 1;
+				cards.add(new Card(name, value));
+			}
 		}
-		throw new IllegalStateException("Hand is empty");
 	}
 
-	public void draw(Deck deck) {
-		hand.add(deck.draw());
+	public Card draw() {
+		if (!cards.isEmpty()) {
+			return cards.remove(0);
+		}
 
+		throw new IllegalStateException("Deck empty");
 	}
 
-	public void incrementScore() {
-		score += 1;
+	public void describe() {
+		System.out.println("check" + cards);
+		for (Card card : cards) {
+			card.describe();
+		}
+
 	}
 
 	@Override
 	public String toString() {
-		return "Player [name=" + name + ", score=" + score + ", hand=" + hand + "]";
+		return "Deck [cards=" + cards + "]";
+	}
+
+	public void shuffle() {
+		Collections.shuffle(cards);
 	}
 
 	public int size() {
-		return hand.size();
-	}
-
-	public List<Card> getHand() {
-		return hand;
-	}
-
-	public void setHand(List<Card> hand) {
-		this.hand = hand;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		return cards.size();
 	}
 
 }
-
